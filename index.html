@@ -1,31 +1,63 @@
 <!DOCTYPE html>
-<html>
-    <head>
-        <meta charset="UTF-8">
-        <title><strong> PIEDRA, PAPEL O TIJERA </strong></title>
-        <script> alert="ESTAS APUNTO DE ENTRAR A UNA PÁGINA INFORMATIVA, AQUI NO SE PUEDE INTERACTUAR"</script>
-    </head>
-    <body>
-        <center><h1><u> Etimología: </u></h1></center>
-            <center>
-            <p>se remonta a un juego chino llamado shoushiling de la dinastía Han (206 a.C. - 220 d.C.), 
-            que evolucionó a sansumien en Japón y finalmente al jan-ken-pon, de donde proviene su nombre
-            en español</p>
-            
-        <img src="D:\TECNO\CUARTO CICLO_IV_2025_II\FUNDAMENTOS DE DESARROLLO WEB_ IV\HTMLS_5\Sesion01\Rock-paper-scissors.svg.png" alt="Descripción de la foto" width="10%"></center>
-            <center><h1><u> ¿Cómo se juega? </u></h1></center>
-                <center><p>Los jugadores cuentan juntos «1, 2, 3..., ¡piedra, papel o tijera!»; «piedra, papel o tijera, 
-                ¡Ya!»; o bien «¡jan, ken, pon!»; «¡ca, chi, pun!»; o directamente «piedra, papel o ¡tijeras!».
-                Y justo al acabar muestran todos al mismo tiempo una de sus manos, 
-                de modo que pueda verse el elemento que cada uno ha elegido:</p></center>
-        <ol type="1">
-            <li> Piedra: un puño cerrado.</li>
-            <li>Papel: todos los dedos extendidos, con la palma de la mano de lado, 
-                mirando hacia abajo o hacia arriba; en algunas variantes, 
-                se coloca la mano en forma de garra o bolsa envolvente.</li> 
-            <li>Tijera: dedos índice y medio extendidos y separados formando una «V».</li>
-        </ol>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Calculadora Simple</title>
+  <!-- Aquí enlazaremos el CSS externo -->
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <div class="container">
+    <h1>Calculadora Simple</h1>
+    <input type="number" id="num1" placeholder="Primer número">
+    <input type="number" id="num2" placeholder="Segundo número">
 
-</html> 
+    <div class="buttons">
+      <button class="sumar" onclick="operar('sumar')">➕ Sumar</button>
+      <button class="restar" onclick="operar('restar')">➖ Restar</button>
+      <button class="multiplicar" onclick="operar('multiplicar')">✖️ Multiplicar</button>
+      <button class="dividir" onclick="operar('dividir')">➗ Dividir</button>
+    </div>
+
+    <p id="resultado">Resultado: </p>
+
+    <button class="autor" onclick="mostrarAutor()">👨‍💻 Mostrar autor</button>
+  </div>
+
+  <script>
+    function operar(operacion) {
+      const num1 = parseFloat(document.getElementById('num1').value);
+      const num2 = parseFloat(document.getElementById('num2').value);
+      let resultado;
+
+      if (isNaN(num1) || isNaN(num2)) {
+        resultado = "Por favor ingresa ambos números.";
+      } else {
+        switch(operacion) {
+          case 'sumar':
+            resultado = num1 + num2;
+            break;
+          case 'restar':
+            resultado = num1 - num2;
+            break;
+          case 'multiplicar':
+            resultado = num1 * num2;
+            break;
+          case 'dividir':
+            resultado = num2 !== 0 ? (num1 / num2).toFixed(2) : "No se puede dividir entre 0";
+            break;
+        }
+      }
+
+      document.getElementById('resultado').textContent = "Resultado: " + resultado;
+    }
+
+    function mostrarAutor() {
+      document.getElementById('resultado').textContent = "✅ Realizado por Andre Mestanza";
+    }
+  </script>
+</body>
+</html>
 
 
