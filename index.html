@@ -3,30 +3,96 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Calculadora Simple</title>
-  <!-- Aquí enlazaremos el CSS externo -->
+  <title>Calculadora Multinivel</title>
   <link rel="stylesheet" href="style.css">
 </head>
 <body>
   <div class="container">
-    <h1>Calculadora Simple</h1>
-    <input type="number" id="num1" placeholder="Primer número">
-    <input type="number" id="num2" placeholder="Segundo número">
+    <h1>📊 Calculadora Multinivel</h1>
 
-    <div class="buttons">
-      <button class="sumar" onclick="operar('sumar')">➕ Sumar</button>
-      <button class="restar" onclick="operar('restar')">➖ Restar</button>
-      <button class="multiplicar" onclick="operar('multiplicar')">✖️ Multiplicar</button>
-      <button class="dividir" onclick="operar('dividir')">➗ Dividir</button>
+    <!-- Menú desplegable -->
+    <select id="menu" onchange="mostrarSeccion()">
+      <option value="">-- Selecciona una opción --</option>
+      <option value="simple">Calculadora Simple</option>
+      <option value="intermedia">Calculadora Intermedia</option>
+      <option value="avanzada">Calculadora Avanzada</option>
+      <option value="conceptos">Conceptos y Reglas</option>
+    </select>
+
+    <!-- Calculadora Simple -->
+    <div id="simple" class="seccion" style="display:none;">
+      <h2>Calculadora Simple</h2>
+      <input type="number" id="num1" placeholder="Primer número">
+      <input type="number" id="num2" placeholder="Segundo número">
+      <div class="buttons">
+        <button onclick="operar('sumar')">➕ Sumar</button>
+        <button onclick="operar('restar')">➖ Restar</button>
+        <button onclick="operar('multiplicar')">✖️ Multiplicar</button>
+        <button onclick="operar('dividir')">➗ Dividir</button>
+      </div>
+      <p id="resultado">Resultado: </p>
+      <button onclick="mostrarAutor()">👨‍💻 Mostrar autor</button>
     </div>
 
-    <p id="resultado">Resultado: </p>
+    <!-- Calculadora Intermedia -->
+    <div id="intermedia" class="seccion" style="display:none;">
+      <h2>Calculadora Intermedia</h2>
+      <input type="number" id="numBase" placeholder="Base">
+      <input type="number" id="numExp" placeholder="Exponente / Índice">
+      <div class="buttons">
+        <button onclick="potencia()">xʸ (Potencia)</button>
+        <button onclick="raiz()">√x (Raíz)</button>
+      </div>
+      <p id="resultado-intermedia">Resultado:</p>
+    </div>
 
-    <button class="autor" onclick="mostrarAutor()">👨‍💻 Mostrar autor</button>
+    <!-- Calculadora Avanzada -->
+    <div id="avanzada" class="seccion" style="display:none;">
+      <h2>Calculadora Avanzada</h2>
+      <input type="text" id="expresion" placeholder="Ejemplo: √(25) + ³√(8) * 2">
+      
+      <div class="buttons">
+        <button onclick="insertarSimbolo('√(')">√</button>
+        <button onclick="insertarSimbolo('³√(')">³√</button>
+        <button onclick="insertarSimbolo('^2')">x²</button>
+        <button onclick="insertarSimbolo('^3')">x³</button>
+        <button onclick="insertarSimbolo('+')">+</button>
+        <button onclick="insertarSimbolo('-')">-</button>
+        <button onclick="insertarSimbolo('*')">×</button>
+        <button onclick="insertarSimbolo('/')">÷</button>
+        <button onclick="insertarSimbolo(')')">)</button>
+      </div>
+
+      <button onclick="operarAvanzada()">Calcular</button>
+      <p id="resultado-avanzada">Resultado:</p>
+    </div>
+
+    <!-- Conceptos -->
+    <div id="conceptos" class="seccion" style="display:none;">
+      <h2>Conceptos y Reglas Básicas</h2>
+      <ul>
+        <li>➕ <b>Suma</b>: se combinan cantidades. Ejemplo: 2 + 3 = 5</li>
+        <li>➖ <b>Resta</b>: diferencia entre números. Ejemplo: 5 - 2 = 3</li>
+        <li>✖️ <b>Multiplicación</b>: suma repetida. Ejemplo: 3 × 4 = 12</li>
+        <li>➗ <b>División</b>: repartir en partes iguales. Ejemplo: 8 ÷ 2 = 4</li>
+        <li>xʸ <b>Potencia</b>: número multiplicado por sí mismo. Ejemplo: 2³ = 8</li>
+        <li>√x <b>Raíz</b>: el número que multiplicado por sí mismo da el valor. Ejemplo: √9 = 3</li>
+        <li>( ) <b>Paréntesis</b>: se resuelven primero en operaciones combinadas.</li>
+      </ul>
+    </div>
   </div>
-
+  
   <script>
-    function operar(operacion) {
+    // Mostrar secciones
+    function mostrarSeccion() {
+      const opcion = document.getElementById("menu").value;
+      const secciones = document.querySelectorAll(".seccion");
+      secciones.forEach(sec => sec.style.display = "none");
+      if (opcion) document.getElementById(opcion).style.display = "block";
+    }
+
+    // --- Simple ---
+    function operar(op) {
       const num1 = parseFloat(document.getElementById('num1').value);
       const num2 = parseFloat(document.getElementById('num2').value);
       let resultado;
@@ -34,30 +100,64 @@
       if (isNaN(num1) || isNaN(num2)) {
         resultado = "Por favor ingresa ambos números.";
       } else {
-        switch(operacion) {
-          case 'sumar':
-            resultado = num1 + num2;
-            break;
-          case 'restar':
-            resultado = num1 - num2;
-            break;
-          case 'multiplicar':
-            resultado = num1 * num2;
-            break;
-          case 'dividir':
-            resultado = num2 !== 0 ? (num1 / num2).toFixed(2) : "No se puede dividir entre 0";
-            break;
+        switch(op) {
+          case 'sumar': resultado = num1 + num2; break;
+          case 'restar': resultado = num1 - num2; break;
+          case 'multiplicar': resultado = num1 * num2; break;
+          case 'dividir': resultado = num2 !== 0 ? (num1 / num2).toFixed(2) : "No se puede dividir entre 0"; break;
         }
       }
-
       document.getElementById('resultado').textContent = "Resultado: " + resultado;
     }
-
     function mostrarAutor() {
-      document.getElementById('resultado').textContent = "✅ Realizado por Andre Mestanza";
+      document.getElementById('resultado').textContent = "✅ Realizado por Andre Mestanza @copyright-2025";
+    }
+
+    // --- Intermedia ---
+    function potencia() {
+      const base = parseFloat(document.getElementById('numBase').value);
+      const exp = parseFloat(document.getElementById('numExp').value);
+      if (isNaN(base) || isNaN(exp)) {
+        document.getElementById('resultado-intermedia').textContent = "Ingresa base y exponente.";
+      } else {
+        document.getElementById('resultado-intermedia').textContent = "Resultado: " + Math.pow(base, exp);
+      }
+    }
+    function raiz() {
+      const base = parseFloat(document.getElementById('numBase').value);
+      const indice = parseFloat(document.getElementById('numExp').value);
+      if (isNaN(base) || isNaN(indice)) {
+        document.getElementById('resultado-intermedia').textContent = "Ingresa base e índice.";
+      } else {
+        document.getElementById('resultado-intermedia').textContent = "Resultado: " + Math.pow(base, 1/indice).toFixed(4);
+      }
+    }
+
+    // --- Avanzada ---
+    function insertarSimbolo(simbolo) {
+      const input = document.getElementById('expresion');
+      input.value += simbolo;
+    }
+
+    function operarAvanzada() {
+      let expr = document.getElementById('expresion').value;
+
+      try {
+        expr = expr.replace(/√\(([^)]+)\)/g, 'Math.sqrt($1)');
+        expr = expr.replace(/³√\(([^)]+)\)/g, 'Math.cbrt($1)');
+        expr = expr.replace(/(\d+)\^2/g, 'Math.pow($1,2)');
+        expr = expr.replace(/(\d+)\^3/g, 'Math.pow($1,3)');
+
+        let resultado = eval(expr);
+        document.getElementById('resultado-avanzada').textContent = "Resultado: " + resultado;
+      } catch (e) {
+        document.getElementById('resultado-avanzada').textContent = "Expresión inválida";
+      }
     }
   </script>
+  
 </body>
 </html>
+
 
 
